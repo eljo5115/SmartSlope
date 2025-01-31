@@ -100,7 +100,7 @@ void processCommand(String command) {
   if (command == "lr"){
     for(int i = 0; i < 2; i++){
       for(int j = 0; j < 3; j++){
-        moveRack(servos[i][j], servos[i][j].currentHeight - leftRightPreset[i][j]);
+        moveRack(servos[i][j], leftRightPreset[i][j] - servos[i][j].currentHeight);
       }
     }
   }
@@ -130,7 +130,7 @@ void processCommand(String command) {
 }
 
 // Function to initialize the movement of a servo
-float moveRack(ServoState& servoState, float distance) {
+void moveRack(ServoState& servoState, float distance) {
   // Calculate the number of pinion rotations needed to achieve the desired rack movement
   float rotations = abs(distance) / pinionCircumference;
 
@@ -153,7 +153,7 @@ float moveRack(ServoState& servoState, float distance) {
   // Mark the servo as active
   servoState.active = true;
   servoState.startTime = millis();  // Record the start time
-  return servoState.currentHeight + distance;
+  servoState.currentHeight = servoState.currentHeight + distance;
 }
 
 // Function to update the state of a servo
