@@ -33,7 +33,7 @@ struct ServoState {
 
 // Array of servo states for all three servos
 ServoState servos[2][3] = {
-  {{&myServo1, 0, 0, false, 0,0.0},{&myServo2, 0, 0, false, 0,0.0},{&myServo3, 0, 0, false, 0,0.0}}
+  {{&myServo1, 0, 0, false, 0,0.0},{&myServo2, 0, 0, false, 0,0.0},{&myServo3, 0, 0, false, 0,0.0}},
   {{&myServo4, 0, 0, false, 0,0.0},{&myServo5, 0, 0, false, 0,0.0},{&myServo6, 0, 0, false, 0,0.0}}
 };
 
@@ -87,8 +87,11 @@ void loop() {
   }
 
   // Update all servos
-  for (int i = 0; i < 3; i++) {
-    updateServo(servos[i]);
+  for (int i = 0; i <2; i++) {
+    for (int j =0; j < 3; j++){
+      updateServo(servos[i][j]);
+
+    }
   }
 }
 
@@ -96,8 +99,8 @@ void loop() {
 void processCommand(String command) {
   if (command == "lr"){
     for(int i = 0; i < 2; i++){
-      for int(j = 0; j < 3; j++){
-        moveRack(servos[i][j], servos[i][j]->currentHeight - leftRightPreset[i][j])
+      for(int j = 0; j < 3; j++){
+        moveRack(servos[i][j], servos[i][j].currentHeight - leftRightPreset[i][j]);
       }
     }
   }
@@ -114,7 +117,7 @@ void processCommand(String command) {
 
   // Validate the servo number and move the corresponding servo
   if (servoNumber >= 1 && servoNumber <= 3) {
-    moveRack(servos[servoNumber - 1], targetRackMovement);  // Move the selected servo
+    //moveRack(servos[servoNumber - 1], targetRackMovement);  // Move the selected servo
     // Inform the user the operation is initiated
     Serial.print("Servo ");
     Serial.print(servoNumber);
@@ -150,7 +153,7 @@ float moveRack(ServoState& servoState, float distance) {
   // Mark the servo as active
   servoState.active = true;
   servoState.startTime = millis();  // Record the start time
-  return servoState->currentHeight + distance;
+  return servoState.currentHeight + distance;
 }
 
 // Function to update the state of a servo
@@ -173,4 +176,3 @@ void updateServo(ServoState& servoState) {
     servoState.active = false;  // Mark the servo as inactive
   }
 }
-
