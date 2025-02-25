@@ -1,7 +1,13 @@
 #include <Servo.h>  // Include the Servo library to control servo motors
 
+#define servosRows 3
+#define servosColumns 3
+
+
 // Create servo objects to control the motors
-Servo myServo1, myServo2, myServo3,myServo4,myServo5,myServo6;
+Servo myServo1, myServo2, myServo3,
+myServo4,myServo5,myServo6,
+myServo7,myServo8,myServo9;
 
 // Pins connected to the servos' signal wires
 const int servoPin1 = 9;  
@@ -10,8 +16,9 @@ const int servoPin3 = 11;
 const int servoPin4 = 12;
 const int servoPin5 = 13;
 const int servoPin6 = 14;
-
-
+const int servoPin7 = 15;
+const int servoPin8 = 16;
+const int servoPin9 = 17;
 
 // Pinion-related constants
 const float pinionCircumference = 3.14159;  // Pinion circumference in inches (1-inch diameter)
@@ -32,15 +39,17 @@ struct ServoState {
 };
 
 // Array of servo states for all three servos
-ServoState servos[2][3] = {
+ServoState servos[servosRows][servosColumns] = {
   {{&myServo1, 0, 0, false, 0,0.0},{&myServo2, 0, 0, false, 0,0.0},{&myServo3, 0, 0, false, 0,0.0}},
-  {{&myServo4, 0, 0, false, 0,0.0},{&myServo5, 0, 0, false, 0,0.0},{&myServo6, 0, 0, false, 0,0.0}}
+  {{&myServo4, 0, 0, false, 0,0.0},{&myServo5, 0, 0, false, 0,0.0},{&myServo6, 0, 0, false, 0,0.0}},
+  {{&myServo7, 0, 0, false, 0,0.0},{&myServo8, 0, 0, false, 0,0.0},{&myServo9, 0, 0, false, 0,0.0}}
 };
 
-float servoHeights[2][3];
-float leftRightPreset[2][3] = {
+float servoHeights[servosRows][servosColumns];
+float leftRightPreset[servosRows][servosColumns] = {
   {1.0,0.6,0.3},
   {1.3,0.8,0.2},
+  {1.5,1.0,0.4}
 };
 
 
@@ -55,6 +64,9 @@ void setup() {
   myServo4.attach(servoPin4);
   myServo5.attach(servoPin5);
   myServo6.attach(servoPin6);
+  myServo7.attach(servoPin7);
+  myServo8.attach(servoPin8);
+  myServo9.attach(servoPin9);
 
   // Inform the user about the input format
   Serial.println("Enter the desired rack movement for multiple servos:");
@@ -87,8 +99,8 @@ void loop() {
   }
 
   // Update all servos
-  for (int i = 0; i <2; i++) {
-    for (int j =0; j < 3; j++){
+  for (int i = 0; i <servosRows; i++) {
+    for (int j =0; j < servosColumns; j++){
       updateServo(servos[i][j]);
 
     }
@@ -98,8 +110,8 @@ void loop() {
 // Function to process a single command like "1 2.5"
 void processCommand(String command) {
   if (command == "lr"){
-    for(int i = 0; i < 2; i++){
-      for(int j = 0; j < 3; j++){
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
         moveRack(servos[i][j], leftRightPreset[i][j] - servos[i][j].currentHeight);
       }
     }
