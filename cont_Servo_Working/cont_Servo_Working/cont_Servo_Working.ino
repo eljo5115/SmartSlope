@@ -2,8 +2,8 @@
 
 #define servosRows 3
 #define servosColumns 3
-
-
+#define setupPullDown -3
+#define removePushOut 5
 // Create servo objects to control the motors
 Servo myServo1, myServo2, myServo3,
 myServo4,myServo5,myServo6,
@@ -51,20 +51,12 @@ float leftRightPreset[servosRows][servosColumns] = {
   {1.3,0.8,0.2},
   {1.5,1.0,0.4}
 };
-float preset2[2][3] = {
+float preset2[servosRows][servosColumns] = {
   {1.7,0.1,0.9},
   {0.7,1.1,0.5},
+  {0.9,1.3,0.7}
 };
 
-float setupPreset[2][3] = {
-  {-3,-3,-3},
-  {-3,-3,-3},
-};
-
-float removePreset[2][3] = {
-  {4,4,4},
-  {4,4,4},
-};
 
 void setup() {
   // Initialize the serial communication
@@ -130,25 +122,25 @@ void processCommand(String command) {
     }
   }
 if (command == "setup"){
-    for(int i = 0; i < 2; i++){
-      for(int j = 0; j < 3; j++){
-        moveRack(servos[i][j], setupPreset[i][j] - servos[i][j].currentHeight);
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], setupPullDown);
         servos[i][j].currentHeight = 0;
       }
     }
   }
     if (command == "remove"){
-    for(int i = 0; i < 2; i++){
-      for(int j = 0; j < 3; j++){
-        moveRack(servos[i][j], removePreset[i][j] - servos[i][j].currentHeight);
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], removePushOut);
         servos[i][j].currentHeight = 0;
       }
     }
   }
 
   if (command == "p2"){
-    for(int i = 0; i < 2; i++){
-      for(int j = 0; j < 3; j++){
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
         moveRack(servos[i][j], preset2[i][j] - servos[i][j].currentHeight);
       }
     }
