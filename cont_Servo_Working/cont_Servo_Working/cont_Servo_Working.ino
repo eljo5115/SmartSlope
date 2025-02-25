@@ -3,22 +3,22 @@
 #define servosRows 3
 #define servosColumns 3
 #define setupPullDown -3
-#define removePushOut 5
+#define removePushOut 3.5
 // Create servo objects to control the motors
 Servo myServo1, myServo2, myServo3,
 myServo4,myServo5,myServo6,
 myServo7,myServo8,myServo9;
 
 // Pins connected to the servos' signal wires
-const int servoPin1 = 9;  
-const int servoPin2 = 10;
-const int servoPin3 = 11;
-const int servoPin4 = 12;
-const int servoPin5 = 13;
-const int servoPin6 = 14;
-const int servoPin7 = 15;
-const int servoPin8 = 16;
-const int servoPin9 = 17;
+const int servoPin1 = 2;  
+const int servoPin2 = 3;
+const int servoPin3 = 4;
+const int servoPin4 = 5;
+const int servoPin5 = 6;
+const int servoPin6 = 7;
+const int servoPin7 = 8;
+const int servoPin8 = 9;
+const int servoPin9 = 10;
 
 // Pinion-related constants
 const float pinionCircumference = 3.14159;  // Pinion circumference in inches (1-inch diameter)
@@ -57,6 +57,9 @@ float preset2[servosRows][servosColumns] = {
   {0.9,1.3,0.7}
 };
 
+float setupPreset[servosRows] = {
+-2.4,-2,-2
+};
 
 void setup() {
   // Initialize the serial communication
@@ -124,7 +127,7 @@ void processCommand(String command) {
 if (command == "setup"){
     for(int i = 0; i < servosRows; i++){
       for(int j = 0; j < servosColumns; j++){
-        moveRack(servos[i][j], setupPullDown);
+        moveRack(servos[i][j], setupPreset[i]);
         servos[i][j].currentHeight = 0;
       }
     }
