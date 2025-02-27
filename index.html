@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Serial Control</title>
+    <script src="./index.js" defer></script>
+</head>
+<body>
+    <h1>Arduino LED Control</h1>
+    <button onclick="sendCommand('ON')">Turn ON</button>
+    <button onclick="sendCommand('OFF')">Turn OFF</button>
+    <p id="status">LED Status: Unknown</p>
+    <button onclick="connectSerial()">Connect to Arduino</button>
+
+</body>
+</html>

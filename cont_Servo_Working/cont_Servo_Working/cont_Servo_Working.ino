@@ -121,6 +121,7 @@ void processCommand(String command) {
     for(int i = 0; i < servosRows; i++){
       for(int j = 0; j < servosColumns; j++){
         moveRack(servos[i][j], leftRightPreset[i][j] - servos[i][j].currentHeight);
+        Serial.println("Setting to right-left preset");
       }
     }
   }
@@ -129,6 +130,7 @@ if (command == "setup"){
       for(int j = 0; j < servosColumns; j++){
         moveRack(servos[i][j], setupPreset[i]);
         servos[i][j].currentHeight = 0;
+        Serial.println("Sucking in plates");
       }
     }
   }
@@ -137,6 +139,7 @@ if (command == "setup"){
       for(int j = 0; j < servosColumns; j++){
         moveRack(servos[i][j], removePushOut);
         servos[i][j].currentHeight = 0;
+        Serial.println("Removing Servos");
       }
     }
   }
