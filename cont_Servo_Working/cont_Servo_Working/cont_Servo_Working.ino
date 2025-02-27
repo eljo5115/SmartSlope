@@ -39,17 +39,20 @@ struct ServoState {
 };
 
 // Array of servo states for all three servos
+//left-right from the starting position
+//allows preset arrays to be written from left-right
+//just trust me
 ServoState servos[servosRows][servosColumns] = {
-  {{&myServo1, 0, 0, false, 0,0.0},{&myServo2, 0, 0, false, 0,0.0},{&myServo3, 0, 0, false, 0,0.0}},
-  {{&myServo4, 0, 0, false, 0,0.0},{&myServo5, 0, 0, false, 0,0.0},{&myServo6, 0, 0, false, 0,0.0}},
-  {{&myServo7, 0, 0, false, 0,0.0},{&myServo8, 0, 0, false, 0,0.0},{&myServo9, 0, 0, false, 0,0.0}}
+  {{&myServo3, 0, 0, false, 0,0.0},{&myServo2, 0, 0, false, 0,0.0},{&myServo1, 0, 0, false, 0,0.0}},
+  {{&myServo6, 0, 0, false, 0,0.0},{&myServo5, 0, 0, false, 0,0.0},{&myServo4, 0, 0, false, 0,0.0}},
+  {{&myServo9, 0, 0, false, 0,0.0},{&myServo8, 0, 0, false, 0,0.0},{&myServo7, 0, 0, false, 0,0.0}}
 };
 
 float servoHeights[servosRows][servosColumns];
 float leftRightPreset[servosRows][servosColumns] = {
   {1.0,0.6,0.3},
   {1.3,0.8,0.2},
-  {1.5,1.0,0.4}
+  {1.5,1.0,0.4},
 };
 float preset2[servosRows][servosColumns] = {
   {1.7,0.1,0.9},
@@ -76,9 +79,9 @@ void setup() {
   myServo8.attach(servoPin8);
   myServo9.attach(servoPin9);
 
-  // Inform the user about the input format
-  Serial.println("Enter the desired rack movement for multiple servos:");
-  Serial.println("Format: servoNumber distance, servoNumber distance (e.g., 1 2.5, 2 -1.0)");
+  // // Inform the user about the input format
+  // Serial.println("Enter the desired rack movement for multiple servos:");
+  // Serial.println("Format: servoNumber distance, servoNumber distance (e.g., 1 2.5, 2 -1.0)");
 }
 
 void loop() {
@@ -108,22 +111,22 @@ void loop() {
 
   // Update all servos
   for (int i = 0; i <servosRows; i++) {
-    for (int j =0; j < servosColumns; j++){
+    for (int j =0; j <servosColumns; j++){
       updateServo(servos[i][j]);
-
     }
   }
 }
 
-// Function to process a single command like "1 2.5"
+// Function to process a single preset
 void processCommand(String command) {
+  /*=================BEGIN COMMANDS==========================*/
   if (command == "lr"){
     for(int i = 0; i < servosRows; i++){
       for(int j = 0; j < servosColumns; j++){
         moveRack(servos[i][j], leftRightPreset[i][j] - servos[i][j].currentHeight);
       }
     }
-        Serial.println("Set to right-left preset");
+    Serial.print("Set to right-left preset\n");
   }
 if (command == "setup"){
     for(int i = 0; i < servosRows; i++){
@@ -132,7 +135,7 @@ if (command == "setup"){
         servos[i][j].currentHeight = 0;
       }
     }
-        Serial.println("Sucking in plates");
+    Serial.println("Sucking in plates");
   }
     if (command == "remove"){
     for(int i = 0; i < servosRows; i++){
@@ -141,7 +144,7 @@ if (command == "setup"){
         servos[i][j].currentHeight = 0;
       }
     }
-        Serial.println("Removing Servos");
+    Serial.println("Removing Servos");
   }
 
   if (command == "p2"){
@@ -150,29 +153,9 @@ if (command == "setup"){
         moveRack(servos[i][j], preset2[i][j] - servos[i][j].currentHeight);
       }
     }
+    Serial.println("Moving to preset 2");
   }
-
-  // Parse the servo number and target distance
-  int spaceIndex = command.indexOf(' ');
-  if (spaceIndex == -1) {
-    Serial.println("Invalid command format. Use: servoNumber distance");
-    return;
-  }
-  int servoNumber = command.substring(0, spaceIndex).toInt();
-  float targetRackMovement = command.substring(spaceIndex + 1).toFloat();
-
-  // Validate the servo number and move the corresponding servo
-  if (servoNumber >= 1 && servoNumber <= 3) {
-    //moveRack(servos[servoNumber - 1], targetRackMovement);  // Move the selected servo
-    // Inform the user the operation is initiated
-    Serial.print("Servo ");
-    Serial.print(servoNumber);
-    Serial.print(" is moving the rack by ");
-    Serial.print(targetRackMovement);
-    Serial.println(" inches.");
-  } else {
-    Serial.println("Invalid servo number. Please enter 1, 2, or 3.");
-  }
+/*=====================END COMMANDS====================*/
 }
 
 // Function to initialize the movement of a servo
