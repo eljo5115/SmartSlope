@@ -1,24 +1,35 @@
 #include <Servo.h>  // Include the Servo library to control servo motors
 
-#define servosRows 3
+#define servosRows 5
 #define servosColumns 3
 #define setupPullDown -3
 #define removePushOut 3.5
+
+
 // Create servo objects to control the motors
 Servo myServo1, myServo2, myServo3,
 myServo4,myServo5,myServo6,
-myServo7,myServo8,myServo9;
+myServo7,myServo8,myServo9,
+myServo10,myServo11,myServo12,
+myServo13,myServo14,myServo15;
 
 // Pins connected to the servos' signal wires
-const int servoPin1 = 2;  
-const int servoPin2 = 3;
-const int servoPin3 = 4;
-const int servoPin4 = 5;
-const int servoPin5 = 6;
-const int servoPin6 = 7;
-const int servoPin7 = 8;
-const int servoPin8 = 9;
-const int servoPin9 = 10;
+// Pins #22-36
+const int servoPin1 = 22; //2
+const int servoPin2 = 23; //3
+const int servoPin3 = 24; //4
+const int servoPin4 = 25; //5
+const int servoPin5 = 26; //6
+const int servoPin6 = 27; //7
+const int servoPin7 = 28; //8
+const int servoPin8 = 29; //9
+const int servoPin9 = 30; //10
+const int servoPin10 = 31;  //11
+const int servoPin11 = 32;  //12
+const int servoPin12 = 33;  //13
+const int servoPin13 = 34;  //14
+const int servoPin14 = 35;  //15
+const int servoPin15 = 36;  //16
 
 // Pinion-related constants
 const float pinionCircumference = 3.14159;  // Pinion circumference in inches (1-inch diameter)
@@ -45,23 +56,29 @@ struct ServoState {
 ServoState servos[servosRows][servosColumns] = {
   {{&myServo3, 0, 0, false, 0,0.0},{&myServo2, 0, 0, false, 0,0.0},{&myServo1, 0, 0, false, 0,0.0}},
   {{&myServo6, 0, 0, false, 0,0.0},{&myServo5, 0, 0, false, 0,0.0},{&myServo4, 0, 0, false, 0,0.0}},
-  {{&myServo9, 0, 0, false, 0,0.0},{&myServo8, 0, 0, false, 0,0.0},{&myServo7, 0, 0, false, 0,0.0}}
+  {{&myServo9, 0, 0, false, 0,0.0},{&myServo8, 0, 0, false, 0,0.0},{&myServo7, 0, 0, false, 0,0.0}},
+  {{&myServo12, 0, 0, false, 0,0.0},{&myServo11, 0, 0, false, 0,0.0},{&myServo10, 0, 0, false, 0,0.0}},
+  {{&myServo15, 0, 0, false, 0,0.0},{&myServo14, 0, 0, false, 0,0.0},{&myServo13, 0, 0, false, 0,0.0}},
 };
 
 float servoHeights[servosRows][servosColumns];
 float leftRightPreset[servosRows][servosColumns] = {
-  {1.0,0.6,0.3},
-  {1.3,0.8,0.2},
-  {1.5,1.0,0.4},
+  {0.8,0.6,0.3},
+  {1.0,0.8,0.2},
+  {1.1,1.0,0.4},
+  {1.3,1.0,0.4},
+  {1.5,1.0,0.4}
 };
 float preset2[servosRows][servosColumns] = {
   {1.7,0.1,0.9},
   {0.7,1.1,0.5},
+  {0.9,1.3,0.7},
+  {0.9,1.5,0.7},
   {0.9,1.3,0.7}
 };
 
 float setupPreset[servosRows] = {
--2.4,-2,-2
+-2.4,-2,-2,-2,-2
 };
 
 void setup() {
@@ -78,6 +95,12 @@ void setup() {
   myServo7.attach(servoPin7);
   myServo8.attach(servoPin8);
   myServo9.attach(servoPin9);
+  myServo10.attach(servoPin10);
+  myServo11.attach(servoPin11);
+  myServo12.attach(servoPin13);
+  myServo13.attach(servoPin13);
+  myServo14.attach(servoPin14);
+  myServo15.attach(servoPin15);
 
   // // Inform the user about the input format
   // Serial.println("Enter the desired rack movement for multiple servos:");
