@@ -2,6 +2,7 @@ let port;
 let writer;
 let reader;
 
+let isSetup = false;
 async function connectSerial() 
 {
     try {
@@ -27,12 +28,21 @@ async function sendCommand(command)
         alert("Connect to Arduino first!");
         return;
     }
+    console.log("Sending...",command);
     const data = new TextEncoder().encode(command + "\n");
     await writer.write(data);
 }
 
 async function readSerialData() 
 {
+
+    /*
+    -1 - removing
+    0 - setup
+    1 - left-right
+    2 - Wonky Waves
+    3 - right-left
+    */
     while (port.readable) {
         try {
             const { value, done } = await reader.read();
@@ -41,12 +51,35 @@ async function readSerialData()
                 reader.releaseLock();
                 break;
             }
-            var string = "";
-            let text = new TextDecoder().decode(value);
+
+            let sRead = new TextDecoder().decode(value); // read from Serial port
+            console.log("Raw serial:",sRead);
+            let text = setText(Number(sRead));
             console.log("Arduino says:", text);
-            document.getElementById("status").innerText = "LED Status: " + text.trim();
+            document.getElementById("status").innerText = "Current setting " + text.trim();
         } catch (error) {
             console.error("Error reading serial data:", error);
         }
+    }
+}
+
+
+function setText(s){
+    console.log("SetText: ", s);
+    switch(s){
+        case -1:
+            return "Removing Plates";
+        case 0:
+            return "Setup";
+        case 1:
+            return "Left-Right Break";
+        case 2:
+            return "Wonky Waves";
+        case 3:
+            return "Right-Left Break";
+        case 4:
+            return "Flat";
+        default:
+            return "Idk probably broken command signal";
     }
 }

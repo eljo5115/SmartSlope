@@ -2,7 +2,6 @@
 
 #define servosRows 5
 #define servosColumns 3
-#define setupPullDown -3
 #define removePushOut 3.5
 
 
@@ -61,7 +60,6 @@ ServoState servos[servosRows][servosColumns] = {
   {{&myServo15, 0, 0, false, 0,0.0},{&myServo14, 0, 0, false, 0,0.0},{&myServo13, 0, 0, false, 0,0.0}},
 };
 
-float servoHeights[servosRows][servosColumns];
 float leftRightPreset[servosRows][servosColumns] = {
   {0.8,0.6,0.3},
   {1.0,0.8,0.2},
@@ -69,6 +67,14 @@ float leftRightPreset[servosRows][servosColumns] = {
   {1.3,1.0,0.4},
   {1.5,1.0,0.4}
 };
+float rightLeftPreset[servosRows][servosColumns] = {
+  {0.3,0.6,0.8},
+  {0.2,0.8,1.0},
+  {0.4,1.0,1.2},
+  {0.4,1.0,1.3},
+  {0.4,1.0,1.5}
+};
+
 float preset2[servosRows][servosColumns] = {
   {1.7,0.1,0.9},
   {0.7,1.1,0.5},
@@ -77,8 +83,12 @@ float preset2[servosRows][servosColumns] = {
   {0.9,1.3,0.7}
 };
 
-float setupPreset[servosRows] = {
--2.4,-2,-2,-2,-2
+float setupPreset[servosRows][servosColumns] = {
+{-2.1,-1.88,-1.94}, // calibrated
+{-1.7,-1.78,-1.82}, // calibrated
+{-1.76,-2.05,-2.25}, // calibrated
+{-2,-1.73,-1.87}, // calibrated
+{-1.82,-1.78,-1.78} // calibrated
 };
 
 void setup() {
@@ -97,7 +107,7 @@ void setup() {
   myServo9.attach(servoPin9);
   myServo10.attach(servoPin10);
   myServo11.attach(servoPin11);
-  myServo12.attach(servoPin13);
+  myServo12.attach(servoPin12);
   myServo13.attach(servoPin13);
   myServo14.attach(servoPin14);
   myServo15.attach(servoPin15);
@@ -149,16 +159,16 @@ void processCommand(String command) {
         moveRack(servos[i][j], leftRightPreset[i][j] - servos[i][j].currentHeight);
       }
     }
-    Serial.print("Set to right-left preset\n");
+    Serial.println(1);
   }
 if (command == "setup"){
     for(int i = 0; i < servosRows; i++){
       for(int j = 0; j < servosColumns; j++){
-        moveRack(servos[i][j], setupPreset[i]);
+        moveRack(servos[i][j], setupPreset[i][j]);
         servos[i][j].currentHeight = 0;
       }
     }
-    Serial.println("Sucking in plates");
+    Serial.println(0);
   }
     if (command == "remove"){
     for(int i = 0; i < servosRows; i++){
@@ -167,7 +177,7 @@ if (command == "setup"){
         servos[i][j].currentHeight = 0;
       }
     }
-    Serial.println("Removing Servos");
+    Serial.println(-1);
   }
 
   if (command == "p2"){
@@ -176,7 +186,30 @@ if (command == "setup"){
         moveRack(servos[i][j], preset2[i][j] - servos[i][j].currentHeight);
       }
     }
-    Serial.println("Moving to preset 2");
+    Serial.println(2);
+  }
+
+  if (command == "rl"){
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], rightLeftPreset[i][j] - servos[i][j].currentHeight);
+      }
+    }
+    Serial.println(3);
+  }
+  if (command == "flat"){
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], -servos[i][j].currentHeight);
+      }
+    }
+    Serial.println(4);
+  }
+  if (command == "testservo"){
+    moveRack(servos[5][3],removePushOut);
+    delay(100);
+    moveRack(servos[5][3], setupPreset[5][3]);
+    Serial.println(99);
   }
 /*=====================END COMMANDS====================*/
 }
