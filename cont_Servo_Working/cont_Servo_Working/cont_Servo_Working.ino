@@ -2,7 +2,7 @@
 
 #define servosRows 5
 #define servosColumns 3
-#define removePushOut 3.5
+#define removePushOut 3
 
 
 // Create servo objects to control the motors
@@ -68,11 +68,11 @@ float leftRightPreset[servosRows][servosColumns] = {
   {1.5,1.0,0.4}
 };
 float rightLeftPreset[servosRows][servosColumns] = {
-  {0.3,0.6,0.8},
-  {0.2,0.8,1.0},
-  {0.4,1.0,1.2},
-  {0.4,1.0,1.3},
-  {0.4,1.0,1.5}
+  {0.0,0.4,0.9},
+  {0.0,0.4,0.9},
+  {0.0,0.4,0.9},
+  {0.0,0.4,0.9},
+  {0.0,0.4,0.9}
 };
 
 float preset2[servosRows][servosColumns] = {
@@ -83,12 +83,20 @@ float preset2[servosRows][servosColumns] = {
   {0.9,1.3,0.7}
 };
 
+float twoTier[servosRows][servosColumns] = {
+  {1.5,1.5,1.5},
+  {1.0,1.0,1.0},
+  {0.6,0.6,0.6},
+  {0.6,0.6,0.6},
+  {0.2,0.2,0.2}
+};
+
 float setupPreset[servosRows][servosColumns] = {
-{-2.1,-1.88,-1.94}, // calibrated
-{-1.7,-1.78,-1.82}, // calibrated
-{-1.76,-2.05,-2.25}, // calibrated
-{-2,-1.73,-1.87}, // calibrated
-{-1.82,-1.78,-1.78} // calibrated
+{-1.75,-1.75,-1.75}, // calibrated
+{-1.6,-1.7,-1.85}, // calibrated
+{-1.7,-1.8,-1.9},  // calibrated
+{-1.9,-1.5,-1.87}, 
+{-1.82,-1.7,-1.78} 
 };
 
 void setup() {
@@ -205,12 +213,15 @@ if (command == "setup"){
     }
     Serial.println(4);
   }
-  if (command == "testservo"){
-    moveRack(servos[5][3],removePushOut);
-    delay(100);
-    moveRack(servos[5][3], setupPreset[5][3]);
-    Serial.println(99);
+  if (command == "2t"){ // two tier green
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], twoTier[i][j] -servos[i][j].currentHeight);
+      }
+    }
+    Serial.println(5);
   }
+
 /*=====================END COMMANDS====================*/
 }
 
