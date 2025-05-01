@@ -79,6 +79,20 @@ function setText(s){
             return "Right-Left Break";
         case 4:
             return "Flat";
+        case 5:
+            return "2 tier";
+        case 6:
+            return "Tiger 2008 US Open";
+        case 7:
+            return "Challenge Mode";
+        case 8:
+            return "5 tier";
+        case 9:
+            return "6 tier";
+        case 10:
+            return "7 tier";
+        case 11:
+            return "8 tier";
         default:
             return "Idk probably broken command signal";
     }

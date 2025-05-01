@@ -64,9 +64,18 @@ float leftRightPreset[servosRows][servosColumns] = {
   {0.8,0.6,0.3},
   {1.0,0.8,0.2},
   {1.1,1.0,0.4},
-  {1.3,1.0,0.4},
-  {1.5,1.0,0.4}
+  {0.8,0.6,0.4},
+  {0.9,0.7,0.4}
 };
+float tigerPreset[servosRows][servosColumns] = {
+  {0.0,0.4,0.6},
+  {0.0,0.4,0.6},
+  {0.0,0.4,0.6},
+  {0.0,0.4,0.6},
+  {0.0,0.4,0.6}
+};
+
+
 float rightLeftPreset[servosRows][servosColumns] = {
   {0.0,0.4,0.9},
   {0.0,0.4,0.9},
@@ -90,12 +99,19 @@ float twoTier[servosRows][servosColumns] = {
   {0.6,0.6,0.6},
   {0.2,0.2,0.2}
 };
+float challengeModePreset[servosRows][servosColumns] = {
+  {0.9,0.3,0.2},
+  {0.3,0.3,0.3},
+  {0.3,0.3,0.3},
+  {0.1,0.4,1.0},
+  {0.5,0.5,0.5}
+};
 
 float setupPreset[servosRows][servosColumns] = {
 {-1.75,-1.75,-1.75}, // calibrated
 {-1.6,-1.7,-1.85}, // calibrated
 {-1.7,-1.8,-1.9},  // calibrated
-{-1.9,-1.5,-1.87}, 
+{-1.9,-1.7,-1.87}, 
 {-1.82,-1.7,-1.78} 
 };
 
@@ -220,6 +236,22 @@ if (command == "setup"){
       }
     }
     Serial.println(5);
+  }
+  if (command == "tiger"){ // two tier green
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], tigerPreset[i][j] -servos[i][j].currentHeight);
+      }
+    }
+    Serial.println(6);
+  }
+  if (command == "chal"){ // two tier green
+    for(int i = 0; i < servosRows; i++){
+      for(int j = 0; j < servosColumns; j++){
+        moveRack(servos[i][j], challengeModePreset[i][j] -servos[i][j].currentHeight);
+      }
+    }
+    Serial.println(7);
   }
 
 /*=====================END COMMANDS====================*/
