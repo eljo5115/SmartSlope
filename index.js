@@ -22,6 +22,15 @@ async function connectSerial()
     }
 }
 
+function sendSetupCommand(){
+    if (!writer) {
+        alert("Connect to Arduino first!");
+        return;
+    }
+    sendCommand("setup");
+    isSetup = true;
+}
+
 async function sendCommand(command) 
 {
     if (!writer) {
@@ -31,6 +40,17 @@ async function sendCommand(command)
     console.log("Sending...",command);
     const data = new TextEncoder().encode(command + "\n");
     await writer.write(data);
+    if(command == "setup"){
+        isSetup = true;
+        document.getElementById('setup-button').hidden = true;
+        document.getElementById('remove-button').hidden = false;
+    }
+    else if(command == "remove"){
+        isSetup = false
+        document.getElementById('setup-button').hidden = false;
+        document.getElementById('remove-button').hidden = true;
+    }
+    
 }
 
 async function readSerialData() 
